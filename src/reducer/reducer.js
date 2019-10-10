@@ -1,5 +1,7 @@
-//Moved the given state from App.js to reducer
+//importing actionTypes
+import * as types from './actionTypes';
 
+//Moved the given state from App.js to reducer
 const state = {
     additionalPrice: 0,
     car: {
@@ -17,7 +19,11 @@ const state = {
     ]
   };
 
-export default reducer(state, action) {
-    return "Hello world";
-};
-
+  export function carReducer(features = state, action) {
+    switch (action.type) {
+      case types.ADD_FEATURE:
+      default:
+        return features;
+    }
+  }
+  
