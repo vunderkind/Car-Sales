@@ -2,7 +2,7 @@
 import * as types from './actionTypes';
 
 //Moved the given state from App.js to reducer
-const state = {
+const initialState = {
     additionalPrice: 0,
     car: {
       price: 26395,
@@ -19,11 +19,42 @@ const state = {
     ]
   };
 
-  export function carReducer(features = state, action) {
+  export const carReducer = (state = initialState, action) => {
     switch (action.type) {
-      case types.ADD_FEATURE:
-      default:
-        return features;
+        case types.ADD_FEATURE:
+            console.log(state.store)
+            return {
+                ...state,
+                additionalPrice: (state.additionalPrice += action.payload.price),
+                car: {
+                    ...state.car,
+                    features: [...state.car.features, action.payload]
+                },
+                store: state.store.filter(cv => {
+                    if(cv.id != action.payload.id){
+                        return cv
+                    }
+                })
+            }
+        case types.REMOVE_FEATURE:
+            console.log(state.store)
+            return{
+                ...state,
+                additionalPrice: (state.additionalPrice -= action.payload.price),
+                ...state.store,
+                    store: [...state.store, action.payload],
+                car: {
+                    ...state.car,
+                    features: state.car.features.filter(cv => {
+                        if(cv.id != action.payload.id) {
+                            return cv
+                        }
+                    })
+
+                },
+
+            }
+        default:
+            return state;
     }
-  }
-  
+}
